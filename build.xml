@@ -1,0 +1,43 @@
+<project basedir="." default="jar" name="SacredLTI">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="SacredLTI.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="miglayout15-swing.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    	<delete file="SacredLTI.jar"/>
+    	<delete file=".lastSession.clf"/>
+    	<delete file="config.cfg"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="SacredLTI.classpath"/>
+        </javac>
+    </target>
+    <target depends="build" name="jar">
+    	<jar destfile="SacredLTI.jar" basedir="bin">
+    		<zipfileset includes="**/*.class" src="miglayout15-swing.jar"/>
+		    <manifest>
+		      <attribute name="Main-Class"
+		            value="gui.MainFrame"/>
+		    </manifest>	
+		</jar>
+    </target>
+    
+</project>
